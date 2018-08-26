@@ -2,12 +2,12 @@
   <view class="container">
     <text class="title">Pin Bin</text>
 
-    <text>{{ usernameInput }}</text>
+    <text>{{ emailInput }}</text>
     <text>{{ passwordInput }}</text>
 
     <text-input
       class="login-input"
-      v-model="usernameInput"
+      v-model="emailInput"
       placeholder="email"
     >
     </text-input>
@@ -42,17 +42,26 @@
 </template>
 
 <script>
+import api from './src/api/api.js'
+
 export default {
   data () {
     return {
-      usernameInput: '',
+      emailInput: '',
       passwordInput: ''
     }
   },
 
   methods: {
-    handleLogin () {
-      alert('Login')
+    async handleLogin () {
+      let params = {
+        'email': this.emailInput,
+        'password': this.passwordInput
+      }
+      let resp = await api.request('post', 'auth', params)
+        .then((resp) => resp)
+      console.log(resp)
+      alert(JSON.stringify(resp))
     },
     handleSignUp () {
       alert('Sign Up')
