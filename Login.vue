@@ -44,6 +44,7 @@
 <script>
 import api from './src/api/api'
 import { getJWT } from './src/api/utils'
+import store from './src/store'
 
 export default {
   props: {
@@ -68,7 +69,14 @@ export default {
       let resp = await api.request('post', 'auth', params)
         .then((resp) => resp)
       console.log(resp)
-      alert(getJWT(resp))
+      let jwt = getJWT(resp)
+      store.commit('setJWT', jwt)
+      console.log(store.state.jwt)
+      if (store.state.jwt) {
+        this.navigation.navigate('Home')
+      } else {
+        alert('An error occurred while logging in.')
+      }
     },
     handleSignUp () {
       this.navigation.navigate('SignUp')
