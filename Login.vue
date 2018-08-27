@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import api from './src/api/api'
+import api from './src/api'
 import { getJWT } from './src/api/utils'
 import store from './src/store'
 
@@ -66,7 +66,7 @@ export default {
         'email': this.emailInput,
         'password': this.passwordInput
       }
-      let resp = await api.request('post', 'auth', params)
+      let resp = await api.post('auth', params)
         .then((resp) => resp)
       console.log(resp)
       let jwt = getJWT(resp)

@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import api from './src/api/api.js'
+import api from './src/api'
 
 export default {
   props: {
@@ -73,7 +73,7 @@ export default {
         'email': this.emailInput,
         'password': this.passwordInput
       }
-      let resp = await api.request('post', 'sign_up', params)
+      let resp = await api.post('sign_up', params)
         .then((resp) => resp)
       console.log(resp)
       alert(JSON.stringify(resp))

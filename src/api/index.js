@@ -5,10 +5,6 @@ const apiHost = env.API_HOST
 const apiPath = env.API_PATH
 
 const api = {
-  async request(action, endpoint, params) {
-    return this[action](endpoint, params)
-  },
-
   async post (endpoint, params) {
     const url = this._constructUrl(endpoint, params)
     return axios.post(url)
