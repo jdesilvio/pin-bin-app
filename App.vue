@@ -6,11 +6,13 @@
 import { StackNavigator } from 'vue-native-router'
 import LoginScreen from './Login'
 import SignUpScreen from './SignUp'
+import HomeScreen from './Home'
 
 const AppNavigation = StackNavigator(
   {
     Login: LoginScreen,
-    SignUp: SignUpScreen
+    SignUp: SignUpScreen,
+    Home: HomeScreen
   },
   {
     initialRouteName: 'Login',
