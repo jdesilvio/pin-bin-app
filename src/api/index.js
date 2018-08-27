@@ -7,11 +7,13 @@ const apiPath = env.API_PATH
 const api = {
   async get (endpoint, params) {
     const url = this._constructUrl(endpoint, params)
+    console.log(url)
     return axios.get(url)
   },
 
   async post (endpoint, params) {
     const url = this._constructUrl(endpoint, params)
+    console.log(url)
     return axios.post(url)
   },
 
