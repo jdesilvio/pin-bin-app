@@ -4,9 +4,9 @@
 
 <script>
 import { StackNavigator } from 'vue-native-router'
-import LoginScreen from './Login'
-import SignUpScreen from './SignUp'
-import HomeScreen from './Home'
+import LoginScreen from './src/screens/Login'
+import SignUpScreen from './src/screens/SignUp'
+import HomeScreen from './src/screens/Home'
 
 const AppNavigation = StackNavigator(
   {

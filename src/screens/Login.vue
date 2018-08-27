@@ -42,9 +42,9 @@
 </template>
 
 <script>
-import api from './src/api'
-import { getJWT } from './src/api/utils'
-import store from './src/store'
+import api from '../api'
+import { getJWT } from '../api/utils'
+import store from '../store'
 
 export default {
   props: {
