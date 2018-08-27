@@ -1,96 +1,22 @@
 <template>
-  <view class="container">
-    <text class="title">Pin Bin</text>
-
-    <text>{{ emailInput }}</text>
-    <text>{{ passwordInput }}</text>
-
-    <text-input
-      class="login-input"
-      v-model="emailInput"
-      placeholder="email"
-    >
-    </text-input>
-    <text-input
-      class="login-input"
-      v-model="passwordInput"
-      placeholder="password"
-    >
-    </text-input>
-
-    <touchable-opacity
-      :on-press="handleLogin"
-      :style="{backgroundColor: 'blue'}"
-    >
-      <text
-        :style="{
-          color: 'blue',
-          fontSize: 24,
-          color: 'white',
-          padding: 8
-        }"
-      >
-        Login
-      </text>
-    </touchable-opacity>
-    <touchable-opacity :on-press="handleSignUp">
-      <text :style="{color: 'blue', fontSize: 16, margin: 8}">
-        Sign Up
-      </text>
-    </touchable-opacity>
-  </view>
+  <app-navigation></app-navigation>
 </template>
 
 <script>
-import api from './src/api/api.js'
+import { StackNavigator } from 'vue-native-router'
+import LoginScreen from './Login'
+import SignUpScreen from './SignUp'
 
-export default {
-  data () {
-    return {
-      emailInput: '',
-      passwordInput: ''
-    }
+const AppNavigation = StackNavigator(
+  {
+    Login: LoginScreen,
+    SignUp: SignUpScreen
   },
-
-  methods: {
-    async handleLogin () {
-      let params = {
-        'email': this.emailInput,
-        'password': this.passwordInput
-      }
-      let resp = await api.request('post', 'auth', params)
-        .then((resp) => resp)
-      console.log(resp)
-      alert(JSON.stringify(resp))
-    },
-    handleSignUp () {
-      alert('Sign Up')
-    }
+  {
+    initialRouteName: 'Login',
   }
+);
+export default {
+    components: { AppNavigation }
 }
 </script>
-
-<style>
-.container {
-  background-color: white;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-}
-.title {
-  color: blue;
-  font-size: 32px;
-}
-.desc {
-  color: gray;
-  font-size: 16px;
-}
-.login-input {
-  height: 40;
-  width: 150;
-  border-color: gray;
-  border-width: 1;
-  padding: 8;
-  margin: 8;
-}
-</style>
