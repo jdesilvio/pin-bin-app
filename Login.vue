@@ -42,7 +42,8 @@
 </template>
 
 <script>
-import api from './src/api/api.js'
+import api from './src/api/api'
+import { getJWT } from './src/api/utils'
 
 export default {
   props: {
@@ -67,7 +68,7 @@ export default {
       let resp = await api.request('post', 'auth', params)
         .then((resp) => resp)
       console.log(resp)
-      alert(JSON.stringify(resp))
+      alert(getJWT(resp))
     },
     handleSignUp () {
       this.navigation.navigate('SignUp')
