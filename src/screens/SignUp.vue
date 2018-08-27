@@ -69,7 +69,7 @@ export default {
   methods: {
     async handleSignUp () {
       let params = {
-        'username': this.username,
+        'username': this.usernameInput,
         'email': this.emailInput,
         'password': this.passwordInput
       }
