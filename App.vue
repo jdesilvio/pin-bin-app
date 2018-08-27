@@ -1,22 +1,24 @@
 <template>
-  <view class="container">
-    <text class="title">Pin Bin</text>
-  </view>
+  <app-navigation></app-navigation>
 </template>
 
-<style>
-.container {
-  background-color: white;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
+<script>
+import { StackNavigator } from 'vue-native-router'
+import LoginScreen from './src/screens/Login'
+import SignUpScreen from './src/screens/SignUp'
+import HomeScreen from './src/screens/Home'
+
+const AppNavigation = StackNavigator(
+  {
+    Login: LoginScreen,
+    SignUp: SignUpScreen,
+    Home: HomeScreen
+  },
+  {
+    initialRouteName: 'Login',
+  }
+);
+export default {
+    components: { AppNavigation }
 }
-.title {
-  color: blue;
-  font-size: 32px;
-}
-.desc {
-  color: gray;
-  font-size: 16px;
-}
-</style>
+</script>
