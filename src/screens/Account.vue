@@ -1,15 +1,18 @@
 <template>
   <view class="container">
-    <touchable-opacity :on-press="goToAccount">
+    <touchable-opacity :on-press="goToHome">
       <text :style="{color: 'blue', fontSize: 16, margin: 8}">
-        My Account
+        Home
       </text>
     </touchable-opacity>
-    <text class="title">Welcome to Pin Bin!</text>
+    <text class="title">My Account</text>
+    <text>{{ userData }}</text>
   </view>
 </template>
 
 <script>
+import api from '../api'
+
 export default {
   props: {
     navigation: {
@@ -17,9 +20,15 @@ export default {
     }
   },
 
+  computed: {
+    userData: function () {
+      return api.get('user/1')
+    }
+  },
+
   methods: {
-    goToAccount () {
-      this.navigation.navigate('Account')
+    goToHome () {
+      this.navigation.navigate('Home')
     }
   }
 }
