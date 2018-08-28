@@ -12,6 +12,7 @@
 
 <script>
 import api from '../api'
+import store from '../store'
 
 export default {
   props: {
@@ -20,15 +21,24 @@ export default {
     }
   },
 
-  computed: {
-    userData: function () {
-      return api.get('user/1')
-    }
+  data: {
+    userData: {}
+  },
+
+  created: function () {
+    this.getUserData()
   },
 
   methods: {
     goToHome () {
       this.navigation.navigate('Home')
+    },
+    getUserData () {
+      api.get(store.state.userResource)
+        .then((resp) => {
+          var vm = this
+          vm.userData = resp.data
+        })
     }
   }
 }

@@ -5,14 +5,15 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    jwt: null
+    jwt: null,
+    userResource: null
   },
   mutations: {
     setJWT (state, jwt) {
       state.jwt = jwt
     },
-    destroyJWT (state) {
-      state.jwt = null
+    setUserResource (state, userResource) {
+      state.userResource = userResource
     }
   }
 })

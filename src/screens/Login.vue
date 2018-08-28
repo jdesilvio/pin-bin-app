@@ -43,7 +43,7 @@
 
 <script>
 import api from '../api'
-import { getJWT } from '../api/utils'
+import { getJWT, getResource } from '../api/utils'
 import store from '../store'
 
 export default {
@@ -68,11 +68,13 @@ export default {
       }
       let resp = await api.post('auth', params)
         .then((resp) => resp)
-      console.log(resp)
       let jwt = getJWT(resp)
+      let userResource = getResource(resp)
+
       store.commit('setJWT', jwt)
-      console.log(store.state.jwt)
-      if (store.state.jwt) {
+      store.commit('setUserResource', userResource)
+
+      if (store.state.jwt && store.state.userResource) {
         this.navigation.navigate('Home')
       } else {
         alert('An error occurred while logging in.')
