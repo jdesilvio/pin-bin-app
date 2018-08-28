@@ -1,11 +1,18 @@
 function getJWT (response) {
   const data = response.data
-  let jwt
   if (data) {
     return data.jwt
   }
 }
 
+function getResource (response) {
+  const data = response.data
+  if (data) {
+    return data.resource
+  }
+}
+
 export {
-  getJWT
+  getJWT,
+  getResource
 }

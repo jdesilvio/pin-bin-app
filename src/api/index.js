@@ -1,12 +1,22 @@
 import axios from 'axios'
+import store from '../store'
 import env from '../../config/base.env.js'
 
 const apiHost = env.API_HOST
 const apiPath = env.API_PATH
 
 const api = {
-  async post (endpoint, params) {
+  get (endpoint, params) {
     const url = this._constructUrl(endpoint, params)
+    this._addJWT()
+    console.log(url)
+    return axios.get(url)
+  },
+
+  post (endpoint, params) {
+    const url = this._constructUrl(endpoint, params)
+    this._addJWT()
+    console.log(url)
     return axios.post(url)
   },
 
@@ -25,6 +35,13 @@ const api = {
     return Object.keys(params)
       .map((key) => key + '=' + params[key])
       .join('&')
+  },
+
+  _addJWT (config) {
+    if (store.state.jwt) {
+      axios.defaults.headers.common['Authorization'] =
+        'Bearer ' + store.state.jwt
+    }
   }
 }
 
