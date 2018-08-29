@@ -1,50 +1,43 @@
 <template>
   <view class="container">
-    <text class="title">Pin Bin</text>
+    <text class="title">pin</text>
+    <text class="title">bin</text>
 
-    <text>{{ emailInput }}</text>
-    <text>{{ passwordInput }}</text>
-
-    <text-input
-      class="login-input"
-      v-model="emailInput"
-      placeholder="email"
-    >
-    </text-input>
-    <text-input
-      class="login-input"
-      v-model="passwordInput"
-      placeholder="password"
-    >
-    </text-input>
-
-    <touchable-opacity
-      :on-press="handleLogin"
-      :style="{backgroundColor: 'blue'}"
-    >
+    <view :style="{padding: 8, alignItems: 'center', width: '100%'}">
+      <text-input
+        class="input"
+        v-model="emailInput"
+        placeholder="email"
+      />
+      <text-input
+        class="input"
+        v-model="passwordInput"
+        placeholder="password"
+      />
       <text
-        :style="{
-          color: 'blue',
-          fontSize: 24,
-          color: 'white',
-          padding: 8
-        }"
+        :style="{color: 'red', fontSize: 10, padding: 8}"
+        v-if="failedAttempt"
       >
-        Login
+        Please check that your username and/or password are correct.
       </text>
-    </touchable-opacity>
-    <touchable-opacity :on-press="handleSignUp">
-      <text :style="{color: 'blue', fontSize: 16, margin: 8}">
-        Sign Up
-      </text>
-    </touchable-opacity>
+
+      <view :style="{padding: 8, alignItems: 'center', width: '100%'}">
+        <btn btn-text="LOG IN" :on-btn-press="handleLogin"></btn>
+        <button
+          :on-press="goToSignUp"
+          title="Don't have an account? Sign up!"
+          color="blue"
+        />
+      </view>
+    </view>
   </view>
 </template>
 
 <script>
 import api from '../api'
-import { getJWT, getResource } from '../api/utils'
+import { getJWT, getResource, formatErrorMsg } from '../api/utils'
 import store from '../store'
+import btn from '../components/Button'
 
 export default {
   props: {
@@ -56,8 +49,17 @@ export default {
   data () {
     return {
       emailInput: '',
-      passwordInput: ''
+      passwordInput: '',
+      failedAttempt: false
     }
+  },
+
+  components: {
+    btn
+  },
+
+  created () {
+    console.log(this.navigation)
   },
 
   methods: {
@@ -66,21 +68,52 @@ export default {
         'email': this.emailInput,
         'password': this.passwordInput
       }
-      let resp = await api.post('auth', params)
-        .then((resp) => resp)
-      let jwt = getJWT(resp)
-      let userResource = getResource(resp)
 
-      store.commit('setJWT', jwt)
-      store.commit('setUserResource', userResource)
+      await api.post('auth', params)
+        .then((response) => {
+          if (response.data.error) {
+            const errorReason = response.data.error.reason
 
-      if (store.state.jwt && store.state.userResource) {
-        this.navigation.navigate('Home')
-      } else {
-        alert('An error occurred while logging in.')
-      }
+            // Account not found
+            if (errorReason === 'not_found') {
+              alert('Account not found.')
+              this.failedAttempt = true
+
+            // Incorrect password
+            } else if (errorReason === 'unauthorized') {
+              this.failedAttempt = true
+              alert('Incorrect password.')
+
+            // Some other error
+            } else {
+              const errorMsg = JSON.stringify(response.data.error)
+              alert(
+                'Oops! An unexpected error occurred.\n\n' +
+                errorMsg
+              )
+            }
+          } else {
+            store.commit('setJWT', getJWT(response))
+            store.commit('setUserResource', getResource(response))
+
+            if (store.state.jwt && store.state.userResource) {
+              this.navigation.navigate('Home')
+            } else {
+              const errorMsg = JSON.stringify(response.data)
+              alert(
+                'Oops! An unexpected error occurred.\n\n' +
+                errorMsg
+              )
+            }
+          }
+        })
+        .catch((error) => {
+          const errorMsg = 'Oops! Something went wrong...\n\n'
+          alert(errorMsg + formatErrorMsg(error))
+          alert(errorMsg)
+        })
     },
-    handleSignUp () {
+    goToSignUp () {
       this.navigation.navigate('SignUp')
     }
   }
@@ -89,24 +122,21 @@ export default {
 
 <style>
 .container {
-  background-color: white;
+  background-color: lightblue;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex: 1;
+  flex-direction: column;
 }
 .title {
   color: blue;
-  font-size: 32px;
+  font-size: 32;
 }
-.desc {
-  color: gray;
-  font-size: 16px;
-}
-.login-input {
+.input {
   height: 40;
-  width: 150;
-  border-color: gray;
-  border-width: 1;
+  width: 90%;
+  background-color: aqua;
+  border-radius: 10;
   padding: 8;
   margin: 8;
 }

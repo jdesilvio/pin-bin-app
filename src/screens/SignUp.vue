@@ -1,55 +1,41 @@
 <template>
   <view class="container">
-    <text class="title">Pin Bin</text>
+    <text class="title">pin</text>
+    <text class="title">bin</text>
 
-    <text>{{ usernameInput }}</text>
-    <text>{{ emailInput }}</text>
-    <text>{{ passwordInput }}</text>
+    <view :style="{padding: 8, alignItems: 'center', width: '100%'}">
+      <text-input
+        class="input"
+        v-model="usernameInput"
+        placeholder="username"
+      />
+      <text-input
+        class="input"
+        v-model="emailInput"
+        placeholder="email"
+      />
+      <text-input
+        class="input"
+        v-model="passwordInput"
+        placeholder="password"
+      />
 
-    <text-input
-      class="sign-up-input"
-      v-model="usernameInput"
-      placeholder="username"
-    >
-    </text-input>
-    <text-input
-      class="sign-up-input"
-      v-model="emailInput"
-      placeholder="email"
-    >
-    </text-input>
-    <text-input
-      class="sign-up-input"
-      v-model="passwordInput"
-      placeholder="password"
-    >
-    </text-input>
-
-    <touchable-opacity
-      :on-press="handleSignUp"
-      :style="{backgroundColor: 'blue'}"
-    >
-      <text
-        :style="{
-          color: 'blue',
-          fontSize: 24,
-          color: 'white',
-          padding: 8
-        }"
-      >
-        Sign Up
-      </text>
-    </touchable-opacity>
-    <touchable-opacity :on-press="handleLogin">
-      <text :style="{color: 'blue', fontSize: 16, margin: 8}">
-        Already have an account? Login
-      </text>
-    </touchable-opacity>
+      <view :style="{padding: 8, alignItems: 'center', width: '100%'}">
+        <btn btn-text="SIGN UP" :on-btn-press="handleSignUp"></btn>
+        <button
+          :on-press="goToLogin"
+          title="Already have an account? Login"
+          color="blue"
+          />
+      </view>
+    </view>
   </view>
 </template>
 
 <script>
 import api from '../api'
+import { formatErrorMsg } from '../api/utils'
+import btn from '../components/Button'
 
 export default {
   props: {
@@ -66,6 +52,10 @@ export default {
     }
   },
 
+  components: {
+    btn
+  },
+
   methods: {
     async handleSignUp () {
       let params = {
@@ -73,12 +63,18 @@ export default {
         'email': this.emailInput,
         'password': this.passwordInput
       }
-      let resp = await api.post('sign_up', params)
-        .then((resp) => resp)
-      console.log(resp)
-      alert(JSON.stringify(resp))
+
+      await api.post('sign_up', params)
+        .then((response) => {
+          alert('Sweet! Your account was successfully created!')
+          this.goToLogin()
+        })
+        .catch((error) => {
+          const errorMsg = 'Oops! Something went wrong...\n\n'
+          alert(errorMsg + formatErrorMsg(error))
+        })
     },
-    handleLogin () {
+    goToLogin () {
       this.navigation.navigate('Login')
     }
   }
@@ -87,24 +83,21 @@ export default {
 
 <style>
 .container {
-  background-color: white;
+  background-color: lightblue;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex: 1;
+  flex-direction: column;
 }
 .title {
   color: blue;
-  font-size: 32px;
+  font-size: 32;
 }
-.desc {
-  color: gray;
-  font-size: 16px;
-}
-.sign-up-input {
+.input {
   height: 40;
-  width: 150;
-  border-color: gray;
-  border-width: 1;
+  width: 90%;
+  background-color: aqua;
+  border-radius: 10;
   padding: 8;
   margin: 8;
 }

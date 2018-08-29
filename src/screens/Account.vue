@@ -1,18 +1,17 @@
 <template>
   <view class="container">
-    <touchable-opacity :on-press="goToHome">
-      <text :style="{color: 'blue', fontSize: 16, margin: 8}">
-        Home
-      </text>
-    </touchable-opacity>
+    <nav-bar :navigation="navigation"></nav-bar>
     <text class="title">My Account</text>
-    <text>{{ userData }}</text>
+    <text>User ID: {{ userId }}</text>
+    <text>Username: {{ username }}</text>
+    <text>Email: {{ email }}</text>
   </view>
 </template>
 
 <script>
 import api from '../api'
 import store from '../store'
+import NavigationBar from '../components/NavigationBar.vue'
 
 export default {
   props: {
@@ -21,8 +20,16 @@ export default {
     }
   },
 
-  data: {
-    userData: {}
+  data () {
+    return {
+      userId: null,
+      username: '',
+      email: ''
+    }
+  },
+
+  components: {
+    NavBar: NavigationBar
   },
 
   created: function () {
@@ -37,7 +44,9 @@ export default {
       api.get(store.state.userResource)
         .then((resp) => {
           var vm = this
-          vm.userData = resp.data
+          vm.userId = resp.data.data.id
+          vm.username = resp.data.data.username
+          vm.email = resp.data.data.email
         })
     }
   }
@@ -48,8 +57,9 @@ export default {
 .container {
   background-color: white;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex: 1;
+  flex-direction: column;
 }
 .title {
   color: blue;
