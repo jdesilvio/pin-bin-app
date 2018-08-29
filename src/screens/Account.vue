@@ -2,7 +2,9 @@
   <view class="container">
     <nav-bar :navigation="navigation"></nav-bar>
     <text class="title">My Account</text>
-    <text>{{ userData }}</text>
+    <text>User ID: {{ userId }}</text>
+    <text>Username: {{ username }}</text>
+    <text>Email: {{ email }}</text>
   </view>
 </template>
 
@@ -18,8 +20,12 @@ export default {
     }
   },
 
-  data: {
-    userData: {}
+  data () {
+    return {
+      userId: null,
+      username: '',
+      email: ''
+    }
   },
 
   components: {
@@ -38,7 +44,9 @@ export default {
       api.get(store.state.userResource)
         .then((resp) => {
           var vm = this
-          vm.userData = resp.data
+          vm.userId = resp.data.data.id
+          vm.username = resp.data.data.username
+          vm.email = resp.data.data.email
         })
     }
   }
