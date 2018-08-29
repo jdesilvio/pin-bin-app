@@ -1,15 +1,13 @@
 <template>
   <view class="container">
-    <touchable-opacity :on-press="goToAccount">
-      <text :style="{color: 'blue', fontSize: 16, margin: 8}">
-        My Account
-      </text>
-    </touchable-opacity>
+    <nav-bar :navigation="navigation"></nav-bar>
     <text class="title">Welcome to Pin Bin!</text>
   </view>
 </template>
 
 <script>
+import NavigationBar from '../components/NavigationBar.vue'
+
 export default {
   props: {
     navigation: {
@@ -17,10 +15,8 @@ export default {
     }
   },
 
-  methods: {
-    goToAccount () {
-      this.navigation.navigate('Account')
-    }
+  components: {
+    NavBar: NavigationBar
   }
 }
 </script>
@@ -29,8 +25,9 @@ export default {
 .container {
   background-color: white;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex: 1;
+  flex-direction: column;
 }
 .title {
   color: blue;

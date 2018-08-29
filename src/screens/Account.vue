@@ -1,10 +1,6 @@
 <template>
   <view class="container">
-    <touchable-opacity :on-press="goToHome">
-      <text :style="{color: 'blue', fontSize: 16, margin: 8}">
-        Home
-      </text>
-    </touchable-opacity>
+    <nav-bar :navigation="navigation"></nav-bar>
     <text class="title">My Account</text>
     <text>{{ userData }}</text>
   </view>
@@ -13,6 +9,7 @@
 <script>
 import api from '../api'
 import store from '../store'
+import NavigationBar from '../components/NavigationBar.vue'
 
 export default {
   props: {
@@ -23,6 +20,10 @@ export default {
 
   data: {
     userData: {}
+  },
+
+  components: {
+    NavBar: NavigationBar
   },
 
   created: function () {
@@ -48,8 +49,9 @@ export default {
 .container {
   background-color: white;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex: 1;
+  flex-direction: column;
 }
 .title {
   color: blue;

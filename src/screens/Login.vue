@@ -51,6 +51,10 @@ export default {
     btn
   },
 
+  created () {
+    console.log(this.navigation)
+  },
+
   methods: {
     async handleLogin () {
       let params = {
