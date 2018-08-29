@@ -12,7 +12,17 @@ function getResource (response) {
   }
 }
 
+function formatErrorMsg (error) {
+  const errors = error.response.data.errors
+  let msg = ''
+  Object.keys(errors).map((key) => {
+    msg += key + ': ' + errors[key] + '\n\n'
+  })
+  return msg
+}
+
 export {
   getJWT,
-  getResource
+  getResource,
+  formatErrorMsg
 }

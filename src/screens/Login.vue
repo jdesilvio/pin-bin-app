@@ -14,6 +14,12 @@
         v-model="passwordInput"
         placeholder="password"
       />
+      <text
+        :style="{color: 'red', fontSize: 10, padding: 8}"
+        v-if="failedAttempt"
+      >
+        Please check that your username and/or password are correct.
+      </text>
 
       <view :style="{padding: 8, alignItems: 'center', width: '100%'}">
         <btn btn-text="LOG IN" :on-btn-press="handleLogin"></btn>
@@ -29,9 +35,9 @@
 
 <script>
 import api from '../api'
-import { getJWT, getResource } from '../api/utils'
+import { getJWT, getResource, formatErrorMsg } from '../api/utils'
 import store from '../store'
-import btn from '../components/Button.vue'
+import btn from '../components/Button'
 
 export default {
   props: {
@@ -43,7 +49,8 @@ export default {
   data () {
     return {
       emailInput: '',
-      passwordInput: ''
+      passwordInput: '',
+      failedAttempt: false
     }
   },
 
@@ -61,19 +68,50 @@ export default {
         'email': this.emailInput,
         'password': this.passwordInput
       }
-      let resp = await api.post('auth', params)
-        .then((resp) => resp)
-      let jwt = getJWT(resp)
-      let userResource = getResource(resp)
 
-      store.commit('setJWT', jwt)
-      store.commit('setUserResource', userResource)
+      await api.post('auth', params)
+        .then((response) => {
+          if (response.data.error) {
+            const errorReason = response.data.error.reason
 
-      if (store.state.jwt && store.state.userResource) {
-        this.navigation.navigate('Home')
-      } else {
-        alert('An error occurred while logging in.')
-      }
+            // Account not found
+            if (errorReason === 'not_found') {
+              alert('Account not found.')
+              this.failedAttempt = true
+
+            // Incorrect password
+            } else if (errorReason === 'unauthorized') {
+              this.failedAttempt = true
+              alert('Incorrect password.')
+
+            // Some other error
+            } else {
+              const errorMsg = JSON.stringify(response.data.error)
+              alert(
+                'Oops! An unexpected error occurred.\n\n' +
+                errorMsg
+              )
+            }
+          } else {
+            store.commit('setJWT', getJWT(response))
+            store.commit('setUserResource', getResource(response))
+
+            if (store.state.jwt && store.state.userResource) {
+              this.navigation.navigate('Home')
+            } else {
+              const errorMsg = JSON.stringify(response.data)
+              alert(
+                'Oops! An unexpected error occurred.\n\n' +
+                errorMsg
+              )
+            }
+          }
+        })
+        .catch((error) => {
+          const errorMsg = 'Oops! Something went wrong...\n\n'
+          alert(errorMsg + formatErrorMsg(error))
+          alert(errorMsg)
+        })
     },
     goToSignUp () {
       this.navigation.navigate('SignUp')

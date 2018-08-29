@@ -34,7 +34,8 @@
 
 <script>
 import api from '../api'
-import btn from '../components/Button.vue'
+import { formatErrorMsg } from '../api/utils'
+import btn from '../components/Button'
 
 export default {
   props: {
@@ -62,10 +63,16 @@ export default {
         'email': this.emailInput,
         'password': this.passwordInput
       }
-      let resp = await api.post('sign_up', params)
-        .then((resp) => resp)
-      console.log(resp)
-      alert(JSON.stringify(resp))
+
+      await api.post('sign_up', params)
+        .then((response) => {
+          alert('Sweet! Your account was successfully created!')
+          this.goToLogin()
+        })
+        .catch((error) => {
+          const errorMsg = 'Oops! Something went wrong...\n\n'
+          alert(errorMsg + formatErrorMsg(error))
+        })
     },
     goToLogin () {
       this.navigation.navigate('Login')
