@@ -12,14 +12,14 @@
       :on-press="goToHome"
       :style="{justifyContent: 'flex-start'}"
     >
-      <icon name="home" :size="24" color="blue" />
+      <icon name="home" :size="24" color="#4987D8" />
     </touchable-opacity>
     <touchable-opacity
       class="nav-element"
       :on-press="goToAccount"
       :style="{justifyContent: 'flex-end'}"
     >
-      <icon name="user-circle" :size="24" color="blue" />
+      <icon name="user-circle" :size="24" color="#4987D8" />
     </touchable-opacity>
   </view>
 </template>

@@ -2,10 +2,10 @@
   <touchable-opacity
     :on-press="onBtnPress"
     :style="{
-      backgroundColor: 'blue',
-      width: '30%',
+      backgroundColor: '#4987D8',
+      width: '95%',
       height: 40,
-      borderRadius: 20,
+      borderRadius: 10,
       alignItems: 'center',
       justifyContent: 'center',
       flexDirection: 'column'
