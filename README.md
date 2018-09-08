@@ -1,3 +1,13 @@
+![Pin Bin logo](https://github.com/jdesilvio/pin-bin-app/blob/master/assets/pinbin-logo-256.png)
+
+---
+
+### Start Expo server
+
+    expo start
+
+---
+
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
 Below you'll find information about performing common tasks. The most recent version of this guide is available [here](https://github.com/react-community/create-react-native-app/blob/master/react-native-scripts/template/README.md).
