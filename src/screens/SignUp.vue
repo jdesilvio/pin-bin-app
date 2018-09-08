@@ -1,7 +1,6 @@
 <template>
   <view class="container">
-    <text class="title">pin</text>
-    <text class="title">bin</text>
+    <image :source="logo" :style="{margin: 16}"/>
 
     <view :style="{padding: 8, alignItems: 'center', width: '100%'}">
       <text-input
@@ -25,7 +24,7 @@
         <button
           :on-press="goToLogin"
           title="Already have an account? Login"
-          color="blue"
+          color="#F8A055"
           />
       </view>
     </view>
@@ -36,6 +35,7 @@
 import api from '../api'
 import { formatErrorMsg } from '../api/utils'
 import btn from '../components/Button'
+import logo from '../../assets/pinbin-logo-128.png';
 
 export default {
   props: {
@@ -46,6 +46,7 @@ export default {
 
   data () {
     return {
+      logo,
       usernameInput: '',
       emailInput: '',
       passwordInput: ''
@@ -83,20 +84,16 @@ export default {
 
 <style>
 .container {
-  background-color: lightblue;
+  background-color: white;
   align-items: center;
   justify-content: flex-start;
   flex: 1;
   flex-direction: column;
 }
-.title {
-  color: blue;
-  font-size: 32;
-}
 .input {
   height: 40;
   width: 90%;
-  background-color: aqua;
+  background-color: #FFDB5C;
   border-radius: 10;
   padding: 8;
   margin: 8;

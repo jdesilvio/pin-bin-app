@@ -1,7 +1,6 @@
 <template>
   <view class="container">
-    <text class="title">pin</text>
-    <text class="title">bin</text>
+    <image :source="logo" :style="{margin: 16}"/>
 
     <view :style="{padding: 8, alignItems: 'center', width: '100%'}">
       <text-input
@@ -15,7 +14,7 @@
         placeholder="password"
       />
       <text
-        :style="{color: 'red', fontSize: 10, padding: 8}"
+        :style="{color: '#FA6E59', fontSize: 10, padding: 8}"
         v-if="failedAttempt"
       >
         Please check that your username and/or password are correct.
@@ -26,7 +25,7 @@
         <button
           :on-press="goToSignUp"
           title="Don't have an account? Sign up!"
-          color="blue"
+          color="#F8A055"
         />
       </view>
     </view>
@@ -38,6 +37,7 @@ import api from '../api'
 import { getJWT, getResource, formatErrorMsg } from '../api/utils'
 import store from '../store'
 import btn from '../components/Button'
+import logo from '../../assets/pinbin-logo-128.png';
 
 export default {
   props: {
@@ -48,6 +48,7 @@ export default {
 
   data () {
     return {
+      logo,
       emailInput: '',
       passwordInput: '',
       failedAttempt: false
@@ -122,20 +123,16 @@ export default {
 
 <style>
 .container {
-  background-color: lightblue;
+  background-color: white;
   align-items: center;
   justify-content: flex-start;
   flex: 1;
   flex-direction: column;
 }
-.title {
-  color: blue;
-  font-size: 32;
-}
 .input {
   height: 40;
   width: 90%;
-  background-color: aqua;
+  background-color: #FFDB5C;
   border-radius: 10;
   padding: 8;
   margin: 8;

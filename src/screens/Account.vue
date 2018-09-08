@@ -62,7 +62,7 @@ export default {
   flex-direction: column;
 }
 .title {
-  color: blue;
+  color: #4987D8;
   font-size: 32px;
 }
 </style>

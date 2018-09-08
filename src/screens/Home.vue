@@ -1,17 +1,24 @@
 <template>
   <view class="container">
     <nav-bar :navigation="navigation"></nav-bar>
-    <text class="title">Welcome to Pin Bin!</text>
+    <image :source="logo" :style="{margin: 64}"/>
   </view>
 </template>
 
 <script>
 import NavigationBar from '../components/NavigationBar.vue'
+import logo from '../../assets/pinbin-logo-256.png';
 
 export default {
   props: {
     navigation: {
       type: Object
+    }
+  },
+
+  data () {
+    return {
+      logo
     }
   },
 
@@ -28,9 +35,5 @@ export default {
   justify-content: flex-start;
   flex: 1;
   flex-direction: column;
-}
-.title {
-  color: blue;
-  font-size: 32px;
 }
 </style>
