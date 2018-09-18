@@ -37,9 +37,6 @@ export default {
   },
 
   methods: {
-    goToHome () {
-      this.navigation.navigate('Home')
-    },
     getUserData () {
       api.get(store.state.userResource)
         .then((resp) => {
