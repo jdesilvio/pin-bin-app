@@ -2,12 +2,14 @@
   <view class="container">
     <nav-bar :navigation="navigation"></nav-bar>
     <image :source="logo" :style="{margin: 64}"/>
+    <btn btn-text="My Bins" :on-btn-press="goToBins"></btn>
   </view>
 </template>
 
 <script>
 import NavigationBar from '../components/NavigationBar.vue'
 import logo from '../../assets/pinbin-logo-256.png';
+import btn from '../components/Button'
 
 export default {
   props: {
@@ -23,7 +25,14 @@ export default {
   },
 
   components: {
-    NavBar: NavigationBar
+    NavBar: NavigationBar,
+    btn
+  },
+
+  methods: {
+    goToBins() {
+      this.navigation.navigate('Bins')
+    }
   }
 }
 </script>

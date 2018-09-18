@@ -1,10 +1,12 @@
 <template>
   <view class="container">
     <nav-bar :navigation="navigation"></nav-bar>
-    <text class="title">My Account</text>
-    <text>User ID: {{ userId }}</text>
-    <text>Username: {{ username }}</text>
-    <text>Email: {{ email }}</text>
+    <text class="title">My Bins</text>
+    <scroll-view>
+      <view v-for="(bin, index) in bins" :key="index">
+        <text>{{ bin.name }}</text>
+      </view>
+    </scroll-view>
   </view>
 </template>
 
@@ -22,9 +24,7 @@ export default {
 
   data () {
     return {
-      userId: null,
-      username: '',
-      email: ''
+      bins: []
     }
   },
 
@@ -33,17 +33,16 @@ export default {
   },
 
   created: function () {
-    this.getUserData()
+    this.getUserBins()
   },
 
   methods: {
-    getUserData () {
-      api.get(store.state.userResource)
+    getUserBins () {
+      api.get(store.state.userResource + '/bins')
         .then((resp) => {
           var vm = this
-          vm.userId = resp.data.data.id
-          vm.username = resp.data.data.username
-          vm.email = resp.data.data.email
+          vm.bins = resp.data.data
+          console.log(this.bins)
         })
     }
   }
