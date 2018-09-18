@@ -9,14 +9,14 @@ const api = {
   get (endpoint, params) {
     const url = this._constructUrl(endpoint, params)
     this._addJWT()
-    console.log(url)
+    console.log('GET ' + url)
     return axios.get(url)
   },
 
   post (endpoint, params) {
     const url = this._constructUrl(endpoint, params)
     this._addJWT()
-    console.log(url)
+    console.log('POST ' + url)
     return axios.post(url)
   },
 
