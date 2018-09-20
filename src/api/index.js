@@ -13,21 +13,26 @@ const api = {
     return axios.get(url)
   },
 
-  post (endpoint, params) {
+  post (endpoint, params, data) {
     const url = this._constructUrl(endpoint, params)
     this._addJWT()
     console.log('POST ' + url)
-    return axios.post(url)
+    return axios({
+      method: 'post',
+      url: url,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: data
+    })
   },
 
   _constructUrl(endpoint, params) {
+    url = [apiHost, apiPath, endpoint].join('/')
     if (params) {
       params = this._constructParams(params)
+      url = [url, params].join('?')
     }
-
-    url = [apiHost, apiPath, endpoint].join('/')
-    url = [url, params].join('?')
-
     return url
   },
 
