@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import NavigationBar from '../components/NavigationBar.vue'
-import logo from '../../assets/pinbin-logo-256.png';
+import NavigationBar from '../components/NavigationBar'
 import btn from '../components/Button'
+import logo from '../../assets/pinbin-logo-256.png'
 
 export default {
   props: {
@@ -30,7 +30,7 @@ export default {
   },
 
   methods: {
-    goToBins() {
+    goToBins () {
       this.navigation.navigate('Bins')
     }
   }
