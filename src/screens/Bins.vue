@@ -6,7 +6,13 @@
       <view v-for="(bin, index) in bins" :key="index">
         <text>{{ bin.name }}</text>
       </view>
+      </btn>
     </scroll-view>
+    <btn
+      v-if="bins.length === 0"
+      btn-text="Create Bin"
+      :on-btn-press="createDefaultBin"
+    >
   </view>
 </template>
 
@@ -14,6 +20,7 @@
 import api from '../api'
 import store from '../store'
 import NavigationBar from '../components/NavigationBar.vue'
+import btn from '../components/Button'
 
 export default {
   props: {
@@ -29,7 +36,8 @@ export default {
   },
 
   components: {
-    NavBar: NavigationBar
+    NavBar: NavigationBar,
+    btn
   },
 
   created: function () {
@@ -38,12 +46,31 @@ export default {
 
   methods: {
     getUserBins () {
-      api.get(store.state.userResource + '/bins')
+      api.get(this.resource)
         .then((resp) => {
           var vm = this
           vm.bins = resp.data.data
           console.log(this.bins)
         })
+    },
+    createDefaultBin () {
+      data = {
+        bin: {
+          name: 'default bin',
+          short_name: 'default_bin'
+        }
+      }
+      api.post(this.resource, false, data)
+        .then((resp) => {
+          this.getUserBins()
+          console.log(this.bins)
+        })
+    }
+  },
+
+  computed: {
+    resource: function () {
+      return store.state.userResource + '/bins'
     }
   }
 }
