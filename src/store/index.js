@@ -6,7 +6,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     jwt: null,
-    userResource: null
+    userResource: null,
+    currentLocation: null
   },
   mutations: {
     setJWT (state, jwt) {
@@ -14,6 +15,9 @@ const store = new Vuex.Store({
     },
     setUserResource (state, userResource) {
       state.userResource = userResource
+    },
+    setCurrentLocation (state, location) {
+      state.currentLocation = location
     }
   }
 })

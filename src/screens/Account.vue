@@ -5,13 +5,10 @@
     <text>User ID: {{ userId }}</text>
     <text>Username: {{ username }}</text>
     <text>Email: {{ email }}</text>
-    <btn btn-text="My Location" :on-btn-press="getLocation"></btn>
   </view>
 </template>
 
 <script>
-import { Constants, Location, Permissions } from 'expo'
-
 import api from '../api'
 import store from '../store'
 import NavigationBar from '../components/NavigationBar'
@@ -50,21 +47,6 @@ export default {
           vm.username = resp.data.data.username
           vm.email = resp.data.data.email
         })
-    },
-    getLocation () {
-      Permissions.askAsync(Permissions.LOCATION).then(status => {
-        if (status.status !== 'granted') {
-          errorMessage = 'Permission to access location was denied'
-          alert(errorMessage)
-        }
-        else {
-          Location.getCurrentPositionAsync({}).then(location => {
-            alert(JSON.stringify(location))
-          })
-        }
-      }).catch(err => {
-        console.log(err)
-      })
     }
   }
 }
