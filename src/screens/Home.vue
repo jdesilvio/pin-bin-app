@@ -6,7 +6,7 @@
       <btn btn-text="My Bins" :on-btn-press="goToBins"></btn>
     </view>
     <view :style="{padding: 8, alignItems: 'center', width: '100%'}">
-      <btn btn-text="My Location" :on-btn-press="getLocation"></btn>
+      <btn btn-text="Get Pins" :on-btn-press="getNearby"></btn>
     </view>
   </view>
 </template>
@@ -14,6 +14,7 @@
 <script>
 import { Constants, Location, Permissions } from 'expo'
 
+import api from '../api'
 import store from '../store'
 import NavigationBar from '../components/NavigationBar'
 import btn from '../components/Button'
@@ -45,9 +46,6 @@ export default {
     goToBins () {
       this.navigation.navigate('Bins')
     },
-    getLocation() {
-      alert(JSON.stringify(store.state.currentLocation))
-    },
     updateLocation () {
       Permissions.askAsync(Permissions.LOCATION).then(status => {
         if (status.status !== 'granted') {
@@ -61,6 +59,23 @@ export default {
         }
       }).catch(err => {
         console.log(err)
+      })
+    },
+    getLocation () {
+      alert(JSON.stringify(store.state.currentLocation))
+    },
+    getNearby () {
+      location = store.state.currentLocation
+      params = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude
+      }
+      api.get('yelp', params).then(response => {
+        data = response.data.data.yelp
+        data = JSON.parse(data)
+        businesses = data.businesses
+        first10 = businesses.slice(0, 10)
+        alert(JSON.stringify(first10))
       })
     }
   }
