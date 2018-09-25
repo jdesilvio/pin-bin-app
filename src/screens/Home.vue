@@ -1,15 +1,23 @@
 <template>
   <view class="container">
     <nav-bar :navigation="navigation"></nav-bar>
-    <image :source="logo" :style="{margin: 64}"/>
-    <btn btn-text="My Bins" :on-btn-press="goToBins"></btn>
+    <image :source="logo" :style="{margin: 16}"/>
+    <view :style="{padding: 8, alignItems: 'center', width: '100%'}">
+      <btn btn-text="My Bins" :on-btn-press="goToBins"></btn>
+    </view>
+    <view :style="{padding: 8, alignItems: 'center', width: '100%'}">
+      <btn btn-text="My Location" :on-btn-press="getLocation"></btn>
+    </view>
   </view>
 </template>
 
 <script>
-import NavigationBar from '../components/NavigationBar.vue'
-import logo from '../../assets/pinbin-logo-256.png';
+import { Constants, Location, Permissions } from 'expo'
+
+import store from '../store'
+import NavigationBar from '../components/NavigationBar'
 import btn from '../components/Button'
+import logo from '../../assets/pinbin-logo-256.png'
 
 export default {
   props: {
@@ -29,9 +37,31 @@ export default {
     btn
   },
 
+  mounted: function () {
+    this.updateLocation()
+  },
+
   methods: {
-    goToBins() {
+    goToBins () {
       this.navigation.navigate('Bins')
+    },
+    getLocation() {
+      alert(JSON.stringify(store.state.currentLocation))
+    },
+    updateLocation () {
+      Permissions.askAsync(Permissions.LOCATION).then(status => {
+        if (status.status !== 'granted') {
+          errorMessage = 'Permission to access location was denied'
+          alert(errorMessage)
+        }
+        else {
+          Location.getCurrentPositionAsync({}).then(location => {
+            store.commit('setCurrentLocation', location)
+          })
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }

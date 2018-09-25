@@ -11,7 +11,8 @@
 <script>
 import api from '../api'
 import store from '../store'
-import NavigationBar from '../components/NavigationBar.vue'
+import NavigationBar from '../components/NavigationBar'
+import btn from '../components/Button'
 
 export default {
   props: {
@@ -29,7 +30,8 @@ export default {
   },
 
   components: {
-    NavBar: NavigationBar
+    NavBar: NavigationBar,
+    btn
   },
 
   created: function () {

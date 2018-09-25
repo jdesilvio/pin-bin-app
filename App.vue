@@ -19,7 +19,7 @@ const AppNavigation = StackNavigator(
     Bins: BinsScreen
   },
   {
-    initialRouteName: 'Login',
+    initialRouteName: 'Login'
   }
 );
 export default {
