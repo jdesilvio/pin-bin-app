@@ -28,7 +28,8 @@ const api = {
   },
 
   _constructUrl(endpoint, params) {
-    url = [apiHost, apiPath, endpoint].join('/')
+    var path = (endpoint.includes(apiPath)) ? '' : apiPath
+    url = [apiHost, path, endpoint].join('/')
     if (params) {
       params = this._constructParams(params)
       url = [url, params].join('?')
