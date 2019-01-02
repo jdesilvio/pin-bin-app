@@ -19,6 +19,7 @@ import store from '../store'
 import NavigationBar from '../components/NavigationBar'
 import btn from '../components/Button'
 import logo from '../../assets/pinbin-logo-256.png'
+import Queue from '../structures/queue'
 
 export default {
   props: {
@@ -74,8 +75,10 @@ export default {
         data = response.data.data.yelp
         data = JSON.parse(data)
         businesses = data.businesses
+        queue = new Queue()
         first10 = businesses.slice(0, 10)
-        alert(JSON.stringify(first10))
+        first10.forEach(x => queue.enqueue(x))
+        alert(JSON.stringify(queue.peek()))
       })
     }
   }
