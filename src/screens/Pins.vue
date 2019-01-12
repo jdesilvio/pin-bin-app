@@ -4,15 +4,15 @@
 
     <view :style="{padding: 16}">
       <pin-card
-        img-url="https://upload.wikimedia.org/wikipedia/commons/4/4d/Batian_Nelion_and_pt_Slade_in_the_foreground_Mt_Kenya.JPG"
-        name="hi"
-        address="here"
-        footer-text="Some footer text">
+        :img-url="imgUrl"
+        :name="name"
+        :address="address"
+        :footer-text="footerText">
       </pin-card>
     </view>
 
     <view :style="{padding: 8, alignItems: 'center', width: '100%'}">
-      <btn btn-text="My Location" :on-btn-press="locationAlert"></btn>
+      <btn btn-text="Get Pin" :on-btn-press="getPin"></btn>
     </view>
   </view>
 </template>
@@ -38,7 +38,11 @@ export default {
 
   data () {
     return {
-      queue
+      queue,
+      imgUrl: '',
+      name: '',
+      address: '',
+      footerText: ''
     }
   },
 
@@ -48,15 +52,8 @@ export default {
     NavBar: NavigationBar,
   },
 
-  beforeCreated: function () {
-  },
-
   mounted: function () {
     this.updateLocation()
-    //this.getNearby()
-    //alert(JSON.stringify(this.queue.peek()))
-    console.log('mounting')
-    alert(this.getLocation())
   },
 
   methods: {
@@ -80,10 +77,10 @@ export default {
       return store.state.currentLocation
     },
     locationAlert () {
-      alert(this.getLocation())
+      alert(JSON.stringify(this.getLocation()))
     },
     getNearby () {
-      location = store.state.currentLocation
+      location = this.getLocation()
       params = {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude
@@ -95,6 +92,22 @@ export default {
         first10 = businesses.slice(0, 10)
         first10.forEach(x => this.queue.enqueue(x))
       })
+    },
+    loadFromQueue () {
+      pin = this.queue.peek()
+      console.log('load', JSON.stringify(pin))
+      if (pin) {
+        console.log('update pin')
+        this.imgUrl = pin.image_url
+        this.name = pin.name
+        this.address = pin.location.address1
+        this.footerText = pin.categories[0].title
+      }
+    },
+    async getPin () {
+      console.log('location', this.getLocation())
+      await this.getNearby()
+      this.loadFromQueue()
     }
   }
 }
