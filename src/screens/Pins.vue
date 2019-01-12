@@ -13,8 +13,15 @@
 </template>
 
 <script>
-import PinCard from '../components/PinCard'
+import { Constants, Location, Permissions } from 'expo'
+
+import api from '../api'
 import NavigationBar from '../components/NavigationBar'
+import PinCard from '../components/PinCard'
+import Queue from '../structures/queue'
+import store from '../store'
+
+var queue = new Queue()
 
 export default {
   props: {
@@ -23,9 +30,57 @@ export default {
     }
   },
 
+  data () {
+    return {
+      queue
+    }
+  },
+
   components: {
     PinCard,
     NavBar: NavigationBar,
+  },
+
+  mounted: async function () {
+    await this.updateLocation()
+    alert(this.getLocation())
+  },
+
+  methods: {
+    updateLocation () {
+      Permissions.askAsync(Permissions.LOCATION).then(status => {
+        if (status.status !== 'granted') {
+          errorMessage = 'Permission to access location was denied'
+          alert(errorMessage)
+        }
+        else {
+          Location.getCurrentPositionAsync({}).then(location => {
+            store.commit('setCurrentLocation', location)
+          })
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    getLocation () {
+      return JSON.stringify(store.state.currentLocation)
+    },
+    getNearby () {
+      location = store.state.currentLocation
+      params = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude
+      }
+      api.get('yelp', params).then(response => {
+        data = response.data.data.yelp
+        data = JSON.parse(data)
+        businesses = data.businesses
+        queue = new Queue()
+        first10 = businesses.slice(0, 10)
+        first10.forEach(x => queue.enqueue(x))
+        alert(JSON.stringify(queue.peek()))
+      })
+    }
   }
 }
 </script>

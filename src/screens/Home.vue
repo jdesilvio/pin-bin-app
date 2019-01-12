@@ -6,7 +6,7 @@
       <btn btn-text="My Bins" :on-btn-press="goToBins"></btn>
     </view>
     <view :style="{padding: 8, alignItems: 'center', width: '100%'}">
-      <btn btn-text="Get Pins" :on-btn-press="getNearby"></btn>
+      <btn btn-text="My Pins" :on-btn-press="goToPins"></btn>
     </view>
   </view>
 </template>
@@ -14,12 +14,10 @@
 <script>
 import { Constants, Location, Permissions } from 'expo'
 
-import api from '../api'
-import store from '../store'
-import NavigationBar from '../components/NavigationBar'
 import btn from '../components/Button'
+import NavigationBar from '../components/NavigationBar'
+
 import logo from '../../assets/pinbin-logo-256.png'
-import Queue from '../structures/queue'
 
 export default {
   props: {
@@ -35,51 +33,16 @@ export default {
   },
 
   components: {
+    btn,
     NavBar: NavigationBar,
-    btn
-  },
-
-  mounted: function () {
-    this.updateLocation()
   },
 
   methods: {
     goToBins () {
       this.navigation.navigate('Bins')
     },
-    updateLocation () {
-      Permissions.askAsync(Permissions.LOCATION).then(status => {
-        if (status.status !== 'granted') {
-          errorMessage = 'Permission to access location was denied'
-          alert(errorMessage)
-        }
-        else {
-          Location.getCurrentPositionAsync({}).then(location => {
-            store.commit('setCurrentLocation', location)
-          })
-        }
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    getLocation () {
-      alert(JSON.stringify(store.state.currentLocation))
-    },
-    getNearby () {
-      location = store.state.currentLocation
-      params = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude
-      }
-      api.get('yelp', params).then(response => {
-        data = response.data.data.yelp
-        data = JSON.parse(data)
-        businesses = data.businesses
-        queue = new Queue()
-        first10 = businesses.slice(0, 10)
-        first10.forEach(x => queue.enqueue(x))
-        alert(JSON.stringify(queue.peek()))
-      })
+    goToPins () {
+      this.navigation.navigate('Pins')
     }
   }
 }
