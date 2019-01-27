@@ -1,9 +1,13 @@
 {
   "expo": {
     "sdkVersion": "27.0.0",
-    "name": "pin-bin-app",
-    "slug": "pin-bin-app",
-    "version": "0.1.0",
-    "description": "Pin Bin App"
+    "name": "Pin Bin",
+    "slug": "pin-bin",
+    "icon": "./assets/pinbin-icon-1024.png",
+    "version": "0.1.2",
+    "description": "Pin Bin is an app for saving places of interest",
+    "ios": {
+      "bundleIdentifier": "com.jdesilvio.PinBin"
+    }
   }
 }
