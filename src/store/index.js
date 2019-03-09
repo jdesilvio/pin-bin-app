@@ -7,7 +7,8 @@ const store = new Vuex.Store({
   state: {
     jwt: null,
     userResource: null,
-    currentLocation: null
+    currentLocation: null,
+    defaultBin: null
   },
   mutations: {
     setJWT (state, jwt) {
@@ -18,6 +19,9 @@ const store = new Vuex.Store({
     },
     setCurrentLocation (state, location) {
       state.currentLocation = location
+    },
+    setDefaultBin (state, defaultBin) {
+      state.defaultBin = defaultBin
     }
   }
 })
