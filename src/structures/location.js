@@ -1,4 +1,4 @@
-class Location {
+class Place {
   constructor (latitude, longitude) {
     this.latitude = latitude
     this.longitude = longitude
@@ -15,7 +15,7 @@ class Location {
   }
 }
 
-class Pin extends Location {
+class Pin extends Place {
   constructor (name, address, latitude, longitude, imgUrl) {
     super(latitude, longitude)
     this.name = name
@@ -62,4 +62,4 @@ var round = (value, precision) => {
     return Math.round(value * multiplier) / multiplier
 }
 
-export { Location }
+export { Place }

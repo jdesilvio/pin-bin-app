@@ -4,7 +4,9 @@
     <text class="title">{{ binName }}</text>
     <scroll-view>
       <view v-for="(pin, index) in pins" :key="index">
-        <text>{{ pin.name }}</text>
+        <text>
+          {{ pin.name }} [{{ distanceFromCurrentLocation(pin) }} miles away]
+        </text>
       </view>
       </btn>
     </scroll-view>
@@ -12,10 +14,13 @@
 </template>
 
 <script>
+import { Constants, Location, Permissions } from 'expo'
+
 import api from '../api'
 import store from '../store'
-import NavigationBar from '../components/NavigationBar.vue'
+import NavigationBar from '../components/NavigationBar'
 import btn from '../components/Button'
+import { Place } from '../structures/location'
 
 export default {
   props: {
@@ -28,7 +33,8 @@ export default {
     return {
       binName: '',
       pins: [],
-      currentBin: store.state.currentBin
+      currentBin: store.state.currentBin,
+      currentLocation: store.state.currentLocation
     }
   },
 
@@ -37,9 +43,12 @@ export default {
     btn
   },
 
-  created () {
-    this.getBin()
-    this.getPins()
+  async created () {
+    await this.getBin()
+    await this.getPins()
+    await this.updateLocation()
+    console.log('created ***', this.currentLocation)
+    console.log('created ***', this.currentBin)
   },
 
   methods: {
@@ -60,6 +69,13 @@ export default {
           var vm = this
           vm.pins = resp.data.data
         })
+    },
+    distanceFromCurrentLocation(pin) {
+      const current = store.state.currentLocation
+      const pinLocation = new Place(pin.latitude, pin.longitude)
+      const dist = Place.distanceBetween(current, pinLocation)
+      console.log('dist', current, pinLocation, dist)
+      return dist
     }
   }
 }

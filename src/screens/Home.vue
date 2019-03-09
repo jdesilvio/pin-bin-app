@@ -18,6 +18,7 @@ import api from '../api'
 import btn from '../components/Button'
 import NavigationBar from '../components/NavigationBar'
 import store from '../store'
+import { Place } from '../structures/location'
 
 import logo from '../../assets/pinbin-logo-256.png'
 
@@ -41,6 +42,7 @@ export default {
       defaultBin = response.data.data[0].id
       store.commit('setDefaultBin', defaultBin)
     })
+    await this.updateLocation()
   },
 
   components: {
@@ -54,6 +56,21 @@ export default {
     },
     goToPins () {
       this.navigation.navigate('Pins')
+    },
+    updateLocation () {
+      Permissions.askAsync(Permissions.LOCATION).then(status => {
+        if (status.status !== 'granted') {
+          errorMessage = 'Permission to access location was denied'
+          alert(errorMessage)
+        }
+        else {
+          Location.getCurrentPositionAsync({}).then(location => {
+            store.commit('setCurrentLocation', new Place(location.coords.latitude, location.coords.longitude))
+          })
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }
