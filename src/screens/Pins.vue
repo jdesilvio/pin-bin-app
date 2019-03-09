@@ -151,6 +151,22 @@ export default {
       }).catch(err => {
         console.log('error', err)
       })
+    },
+    loadFromQueue () {
+      pin = this.queue.peek()
+      console.log('load', JSON.stringify(pin))
+      if (pin) {
+        console.log('update pin')
+        this.imgUrl = pin.image_url
+        this.name = pin.name
+        this.address = pin.location.address1
+        this.footerText = pin.categories[0].title
+      }
+    },
+    async getPin () {
+      console.log('location', this.getLocation())
+      await this.getNearby()
+      this.loadFromQueue()
     }
   }
 }
