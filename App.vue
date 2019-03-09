@@ -9,6 +9,7 @@ import SignUpScreen from './src/screens/SignUp'
 import HomeScreen from './src/screens/Home'
 import AccountScreen from './src/screens/Account'
 import BinsScreen from './src/screens/Bins'
+import PinsScreen from './src/screens/Pins'
 
 const AppNavigation = StackNavigator(
   {
@@ -16,7 +17,8 @@ const AppNavigation = StackNavigator(
     SignUp: SignUpScreen,
     Home: HomeScreen,
     Account: AccountScreen,
-    Bins: BinsScreen
+    Bins: BinsScreen,
+    Pins: PinsScreen
   },
   {
     initialRouteName: 'Login'
