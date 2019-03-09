@@ -2,17 +2,18 @@
   <view class="container">
     <nav-bar :navigation="navigation"></nav-bar>
     <text class="title">My Bins</text>
-    <scroll-view>
-      <view v-for="(bin, index) in bins" :key="index">
-        <text>{{ bin.name }}</text>
-      </view>
-      </btn>
-    </scroll-view>
+    <view
+      v-for="(bin, index) in bins"
+      :key="index"
+      :style="{flex: 1, padding: 8, alignItems: 'center', width: '100%'}"
+    >
+    <btn class="button" :btn-text="bin.name" :on-btn-press="() => goToBinViewer(bin.id)"></btn>
+    </view>
     <btn
       v-if="bins.length === 0"
       btn-text="Create Bin"
       :on-btn-press="createDefaultBin"
-    >
+    ></btn>
   </view>
 </template>
 
@@ -65,6 +66,13 @@ export default {
           this.getUserBins()
           console.log(this.bins)
         })
+    },
+
+    goToBinViewer (id) {
+      console.log('go to bin viewer', id)
+      store.commit('setCurrentBin', id)
+      console.log('***', id)
+      this.navigation.navigate('BinViewer')
     }
   },
 

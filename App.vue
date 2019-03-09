@@ -10,7 +10,10 @@ import HomeScreen from './src/screens/Home'
 import AccountScreen from './src/screens/Account'
 import BinsScreen from './src/screens/Bins'
 import PinsScreen from './src/screens/Pins'
+import BinViewerScreen from './src/screens/BinViewer'
 
+import api from './src/api'
+const initialRouteName = store.state.jwt ? 'Home' : 'Login'
 const AppNavigation = StackNavigator(
   {
     Login: LoginScreen,
@@ -18,13 +21,15 @@ const AppNavigation = StackNavigator(
     Home: HomeScreen,
     Account: AccountScreen,
     Bins: BinsScreen,
-    Pins: PinsScreen
+    Pins: PinsScreen,
+    BinViewer: BinViewerScreen
   },
   {
-    initialRouteName: 'Login'
+    initialRouteName: initialRouteName
   }
-);
+)
+
 export default {
-    components: { AppNavigation }
+  components: { AppNavigation }
 }
 </script>
