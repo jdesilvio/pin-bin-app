@@ -2,7 +2,7 @@
   <view
     class="card"
     :style="{
-      height: '80%',
+      height: '70%',
       width: '100%',
       alignSelf: 'center',
       borderWidth: 0.5,

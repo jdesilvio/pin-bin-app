@@ -27,6 +27,20 @@ const api = {
     })
   },
 
+  put (endpoint, params, data) {
+    const url = this._constructUrl(endpoint, params)
+    this._addJWT()
+    console.log('PUT ' + url)
+    return axios({
+      method: 'put',
+      url: url,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: data
+    })
+  },
+
   _constructUrl(endpoint, params) {
     var path = (endpoint.includes(apiPath)) ? '' : apiPath
     url = [apiHost, path, endpoint].join('/')
