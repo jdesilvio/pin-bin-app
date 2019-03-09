@@ -2,10 +2,13 @@
   <view class="container">
     <nav-bar :navigation="navigation"></nav-bar>
     <text class="title">{{ binName }}</text>
-    <scroll-view>
-      <view v-for="(pin, index) in pins" :key="index">
+    <scroll-view :style="{width: '100%', margin: 16}">
+      <view class="border" v-for="(pin, index) in pins" :key="index">
         <text>
-          {{ pin.name }} [{{ distanceFromCurrentLocation(pin) }} miles away]
+          {{ pin.name }}
+        </text>
+        <text :style="{color: 'gray'}">
+          [{{ distanceFromCurrentLocation(pin) }} mi.]
         </text>
       </view>
       </btn>
@@ -41,9 +44,9 @@ export default {
     btn
   },
 
-  async created () {
-    await this.getBin()
-    await this.getPins()
+  created () {
+    this.getBin()
+    this.getPins()
   },
 
   methods: {
@@ -65,7 +68,8 @@ export default {
           vm.pins = resp.data.data
         })
     },
-    distanceFromCurrentLocation(pin) {
+
+    distanceFromCurrentLocation (pin) {
       const pinLocation = new Place(pin.latitude, pin.longitude)
       return Place.distanceBetween(this.currentLocation, pinLocation)
     }
@@ -85,5 +89,10 @@ export default {
   color: #4987D8;
   font-size: 32px;
 }
+.border {
+  border-bottom-width: 1;
+  border-color: gray;
+  width: 100%;
+  padding: 16;
+}
 </style>
-
