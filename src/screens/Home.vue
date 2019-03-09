@@ -12,13 +12,11 @@
 </template>
 
 <script>
-import { Constants, Location, Permissions } from 'expo'
-
 import api from '../api'
 import btn from '../components/Button'
 import NavigationBar from '../components/NavigationBar'
 import store from '../store'
-import { Place } from '../structures/location'
+import { Place, updateLocation } from '../location'
 
 import logo from '../../assets/pinbin-logo-256.png'
 
@@ -35,14 +33,13 @@ export default {
     }
   },
 
-  async created () {
-    console.log(JSON.stringify(store.state))
-    var defaultBin
-    await api.get(store.state.userResource + '/bins').then(response => {
-      defaultBin = response.data.data[0].id
-      store.commit('setDefaultBin', defaultBin)
-    })
-    await this.updateLocation()
+  created () {
+    api.get(store.state.userResource + '/bins')
+      .then(response => {
+        let defaultBin = response.data.data[0].id
+        store.commit('setDefaultBin', defaultBin)
+      })
+    updateLocation()
   },
 
   components: {
@@ -56,21 +53,6 @@ export default {
     },
     goToPins () {
       this.navigation.navigate('Pins')
-    },
-    updateLocation () {
-      Permissions.askAsync(Permissions.LOCATION).then(status => {
-        if (status.status !== 'granted') {
-          errorMessage = 'Permission to access location was denied'
-          alert(errorMessage)
-        }
-        else {
-          Location.getCurrentPositionAsync({}).then(location => {
-            store.commit('setCurrentLocation', new Place(location.coords.latitude, location.coords.longitude))
-          })
-        }
-      }).catch(err => {
-        console.log(err)
-      })
     }
   }
 }

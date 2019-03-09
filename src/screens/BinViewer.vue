@@ -14,13 +14,11 @@
 </template>
 
 <script>
-import { Constants, Location, Permissions } from 'expo'
-
 import api from '../api'
 import store from '../store'
 import NavigationBar from '../components/NavigationBar'
 import btn from '../components/Button'
-import { Place } from '../structures/location'
+import { Place } from '../location'
 
 export default {
   props: {
@@ -46,9 +44,6 @@ export default {
   async created () {
     await this.getBin()
     await this.getPins()
-    await this.updateLocation()
-    console.log('created ***', this.currentLocation)
-    console.log('created ***', this.currentBin)
   },
 
   methods: {
@@ -71,11 +66,8 @@ export default {
         })
     },
     distanceFromCurrentLocation(pin) {
-      const current = store.state.currentLocation
       const pinLocation = new Place(pin.latitude, pin.longitude)
-      const dist = Place.distanceBetween(current, pinLocation)
-      console.log('dist', current, pinLocation, dist)
-      return dist
+      return Place.distanceBetween(this.currentLocation, pinLocation)
     }
   }
 }

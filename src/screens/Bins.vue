@@ -7,7 +7,11 @@
       :key="index"
       :style="{flex: 1, padding: 8, alignItems: 'center', width: '100%'}"
     >
-    <btn class="button" :btn-text="bin.name" :on-btn-press="() => goToBinViewer(bin.id)"></btn>
+    <btn
+      class="button"
+      :btn-text="bin.name"
+      :on-btn-press="() => goToBinViewer(bin.id)"
+    ></btn>
     </view>
     <btn
       v-if="bins.length === 0"
@@ -69,9 +73,7 @@ export default {
     },
 
     goToBinViewer (id) {
-      console.log('go to bin viewer', id)
       store.commit('setCurrentBin', id)
-      console.log('***', id)
       this.navigation.navigate('BinViewer')
     }
   },

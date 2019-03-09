@@ -1,3 +1,7 @@
+import { Constants, Location, Permissions } from 'expo'
+
+import store from '../store'
+
 class Place {
   constructor (latitude, longitude) {
     this.latitude = latitude
@@ -62,4 +66,20 @@ var round = (value, precision) => {
     return Math.round(value * multiplier) / multiplier
 }
 
-export { Place }
+var updateLocation = () => {
+  Permissions.askAsync(Permissions.LOCATION).then(status => {
+    if (status.status !== 'granted') {
+      errorMessage = 'Permission to access location was denied'
+      alert(errorMessage)
+    }
+    else {
+      Location.getCurrentPositionAsync({}).then(location => {
+        store.commit('setCurrentLocation', new Place(location.coords.latitude, location.coords.longitude))
+      })
+    }
+  }).catch(err => {
+    console.log(err)
+  })
+}
+
+export { Place , updateLocation }
