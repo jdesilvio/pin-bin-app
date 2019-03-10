@@ -22,6 +22,9 @@ const store = new Vuex.Store({
     },
     setDefaultBin (state, defaultBin) {
       state.defaultBin = defaultBin
+    },
+    setCurrentBin (state, currentBin) {
+      state.currentBin = currentBin
     }
   }
 })

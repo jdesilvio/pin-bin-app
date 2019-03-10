@@ -12,12 +12,11 @@
 </template>
 
 <script>
-import { Constants, Location, Permissions } from 'expo'
-
 import api from '../api'
 import btn from '../components/Button'
 import NavigationBar from '../components/NavigationBar'
 import store from '../store'
+import { Place, updateLocation } from '../location'
 
 import logo from '../../assets/pinbin-logo-256.png'
 
@@ -34,13 +33,13 @@ export default {
     }
   },
 
-  async created () {
-    console.log(JSON.stringify(store.state))
-    var defaultBin
-    await api.get(store.state.userResource + '/bins').then(response => {
-      defaultBin = response.data.data[0].id
-      store.commit('setDefaultBin', defaultBin)
-    })
+  created () {
+    api.get(store.state.userResource + '/bins')
+      .then(response => {
+        let defaultBin = response.data.data[0].id
+        store.commit('setDefaultBin', defaultBin)
+      })
+    updateLocation()
   },
 
   components: {
