@@ -36,7 +36,9 @@ export default {
 
   data () {
     return {
-      bins: []
+      bins: [],
+      // TODO: do this more consistently throughout
+      resource: store.state.userResource + '/bins'
     }
   },
 
@@ -58,6 +60,7 @@ export default {
           console.log(this.bins)
         })
     },
+
     createDefaultBin () {
       data = {
         bin: {
@@ -75,12 +78,6 @@ export default {
     goToBinViewer (id) {
       store.commit('setCurrentBin', id)
       this.navigation.navigate('BinViewer')
-    }
-  },
-
-  computed: {
-    resource: function () {
-      return store.state.userResource + '/bins'
     }
   }
 }

@@ -34,7 +34,10 @@ export default {
     return {
       binName: '',
       pins: [],
-      currentBin: store.state.currentBin,
+      currentBinRoute:
+        store.state.userResource +
+        '/bins/' +
+        store.state.currentBin,
       currentLocation: store.state.currentLocation
     }
   },
@@ -51,8 +54,7 @@ export default {
 
   methods: {
     getBin () {
-      const binUrl = store.state.userResource + '/bins/' + this.currentBin
-      api.get(binUrl)
+      api.get(this.currentBinRoute)
         .then((resp) => {
           var vm = this
           vm.bin = resp.data.data
@@ -61,8 +63,8 @@ export default {
     },
 
     getPins () {
-      const pinsUrl = store.state.userResource + '/bins/' + this.currentBin + '/pins'
-      api.get(pinsUrl)
+      const pinsRoute = this.currentBinRoute + '/pins'
+      api.get(pinsRoute)
         .then((resp) => {
           var vm = this
           vm.pins = resp.data.data

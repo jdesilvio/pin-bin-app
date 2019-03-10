@@ -21,14 +21,13 @@
 </template>
 
 <script>
-import { Constants, Location, Permissions } from 'expo'
-
 import api from '../api'
 import btn from '../components/Button'
 import NavigationBar from '../components/NavigationBar'
 import PinCard from '../components/PinCard'
 import Queue from '../structures/queue'
 import store from '../store'
+import { updateLocation } from '../location'
 
 var queue = new Queue()
 
@@ -56,42 +55,22 @@ export default {
   },
 
   async created () {
-    var location = await this.updateLocation()
-    console.log('location', location)
+    await updateLocation()
     await this.getNearby()
-    console.log(JSON.stringify(this.queue))
   },
 
   methods: {
-    updateLocation () {
-      Permissions.askAsync(Permissions.LOCATION).then(status => {
-        if (status.status !== 'granted') {
-          errorMessage = 'Permission to access location was denied'
-          alert(errorMessage)
-        }
-        else {
-          Location.getCurrentPositionAsync({}).then(location => {
-            store.commit('setCurrentLocation', location)
-            console.log('update locaton', JSON.stringify(location))
-            return location
-          })
-        }
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    getLocation () {
+    getCurrentLocation () {
+      updateLocation()  // To continuously update location
       return store.state.currentLocation
     },
-    locationAlert () {
-      alert(JSON.stringify(this.getLocation()))
-    },
+
     getNearby () {
       console.log('get nearby')
-      location = this.getLocation()
+      const currentLocation = this.getCurrentLocation()
       params = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude
       }
       api.get('yelp', params).then(response => {
         data = response.data.data.yelp
@@ -101,6 +80,7 @@ export default {
         first10.forEach(x => this.queue.enqueue(x))
       })
     },
+
     loadFromQueue () {
       const pin = this.queue.peek()
       console.log('load', JSON.stringify(pin))
@@ -112,17 +92,20 @@ export default {
         this.footerText = pin.categories[0].title
       }
     },
+
     async getPin () {
       console.log('get pin')
       // TODO: check if the queue is empty then get more
       await this.getNearby()
       this.loadFromQueue()
     },
+
     discardPin () {
       console.log('discard pin')
       this.queue.dequeue()
       this.loadFromQueue()
     },
+
     savePin () {
       const pin = this.queue.dequeue()
       var endpoint
@@ -152,6 +135,7 @@ export default {
         console.log('error', err)
       })
     },
+
     loadFromQueue () {
       pin = this.queue.peek()
       console.log('load', JSON.stringify(pin))
@@ -162,11 +146,6 @@ export default {
         this.address = pin.location.address1
         this.footerText = pin.categories[0].title
       }
-    },
-    async getPin () {
-      console.log('location', this.getLocation())
-      await this.getNearby()
-      this.loadFromQueue()
     }
   }
 }
