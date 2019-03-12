@@ -41,6 +41,13 @@ const api = {
     })
   },
 
+  delete (endpoint, params) {
+    const url = this._constructUrl(endpoint, params)
+    this._addJWT()
+    console.log('DELETE ' + url)
+    return axios.delete(url)
+  },
+
   _constructUrl(endpoint, params) {
     var path = (endpoint.includes(apiPath)) ? '' : apiPath
     url = [apiHost, path, endpoint].join('/')

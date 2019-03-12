@@ -13,6 +13,8 @@
 
     <view :style="{flex: 1, padding: 8, alignItems: 'center', width: '100%'}">
       <btn class="button" btn-text="Discard" :on-btn-press="discardPin"></btn>
+    </view>
+    <view :style="{flex: 1, padding: 8, alignItems: 'center', width: '100%'}">
       <btn class="button" btn-text="Save" :on-btn-press="savePin"></btn>
     </view>
 

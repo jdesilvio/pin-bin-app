@@ -3,13 +3,17 @@
     <nav-bar :navigation="navigation"></nav-bar>
     <text class="title">{{ binName }}</text>
     <scroll-view :style="{width: '100%', margin: 16}">
-      <view class="border" v-for="(pin, index) in pins" :key="index">
-        <text>
-          {{ pin.name }}
+      <view class="row" v-for="(pin, index) in pins" :key="index">
+        <text class="row-elem">
+          {{ pin.name }} [{{ distanceFromCurrentLocation(pin) }} mi.]
         </text>
-        <text :style="{color: 'gray'}">
-          [{{ distanceFromCurrentLocation(pin) }} mi.]
-        </text>
+        <touchable-opacity
+          class="row-elem"
+          :on-press="() => deletePin(index, pin.id)"
+          :style="{justifyContent: 'flex-end'}"
+        >
+          <icon name="trash" :size="24" color="#4987D8" />
+        </touchable-opacity>
       </view>
       </btn>
     </scroll-view>
@@ -18,10 +22,13 @@
 
 <script>
 import api from '../api'
+import { formatErrorMsg } from '../api/utils'
 import store from '../store'
 import NavigationBar from '../components/NavigationBar'
 import btn from '../components/Button'
 import { Place } from '../location'
+
+import icon from 'react-native-vector-icons/FontAwesome'
 
 export default {
   props: {
@@ -44,7 +51,8 @@ export default {
 
   components: {
     NavBar: NavigationBar,
-    btn
+    btn,
+    icon
   },
 
   created () {
@@ -74,6 +82,21 @@ export default {
     distanceFromCurrentLocation (pin) {
       const pinLocation = new Place(pin.latitude, pin.longitude)
       return Place.distanceBetween(this.currentLocation, pinLocation)
+    },
+
+    deletePin (index, id) {
+      console.log('deleting pin')
+      const pinRoute = [this.currentBinRoute, 'pins', id].join('/')
+      api.delete(pinRoute)
+        .then((resp) => {
+          console.log('pin deleted')
+          this.pins.splice(index, 1)
+        })
+        .catch((error) => {
+          console.log('error deleting pin', error)
+          const errorMsg = 'Oops! Something went wrong...\n\n'
+          alert(errorMsg + formatErrorMsg(error))
+        })
     }
   }
 }
@@ -91,10 +114,16 @@ export default {
   color: #4987D8;
   font-size: 32px;
 }
-.border {
+.row {
   border-bottom-width: 1;
   border-color: gray;
   width: 100%;
   padding: 16;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.row-elem {
+padding: 16;
 }
 </style>
