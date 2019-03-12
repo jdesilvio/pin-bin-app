@@ -13,6 +13,8 @@ import PinsScreen from './src/screens/Pins'
 import BinViewerScreen from './src/screens/BinViewer'
 
 import api from './src/api'
+import store from './src/store'
+
 const initialRouteName = store.state.jwt ? 'Home' : 'Login'
 const AppNavigation = StackNavigator(
   {
