@@ -74,7 +74,13 @@ var updateLocation = () => {
     }
     else {
       Location.getCurrentPositionAsync({}).then(location => {
-        store.commit('setCurrentLocation', new Place(location.coords.latitude, location.coords.longitude))
+        store.commit(
+          'setCurrentLocation',
+          new Place(
+            location.coords.latitude,
+            location.coords.longitude
+          )
+        )
       })
     }
   }).catch(err => {
@@ -82,4 +88,18 @@ var updateLocation = () => {
   })
 }
 
-export { Place , updateLocation }
+getLocationAsync = async () => {
+  let { status } = await Permissions.askAsync(Permissions.LOCATION);
+  if (status !== 'granted') {
+      errorMessage = 'Permission to access location was denied'
+      alert(errorMessage)
+  }
+  let location = await Location.getCurrentPositionAsync({})
+  location = new Place(
+    location.coords.latitude,
+    location.coords.longitude
+  )
+  return location
+}
+
+export { Place , updateLocation, getLocationAsync }
