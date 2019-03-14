@@ -5,7 +5,7 @@
     <scroll-view :style="{width: '100%', margin: 16}">
       <view class="row" v-for="(pin, index) in pins" :key="index">
         <text class="row-elem">
-          {{ pin.name }} [{{ distanceFromCurrentLocation(pin) }} mi.]
+          {{ pin.name }} [{{ pin.distance }} mi.]
         </text>
         <touchable-opacity
           class="row-elem"
@@ -74,8 +74,13 @@ export default {
       const pinsRoute = this.currentBinRoute + '/pins'
       api.get(pinsRoute)
         .then((resp) => {
-          var vm = this
-          vm.pins = resp.data.data
+          let vm = this
+          let pins = resp.data.data
+          pins.forEach((pin) => {
+            pin.distance = this.distanceFromCurrentLocation(pin)
+          })
+          pins.sort((a, b) => a.distance - b.distance)
+          this.pins = pins
         })
     },
 
