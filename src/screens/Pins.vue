@@ -11,14 +11,13 @@
       </pin-card>
     </view>
 
-    <view :style="{flex: 1, padding: 8, alignItems: 'center', width: '100%'}">
-      <btn class="button" btn-text="Discard" :on-btn-press="discardPin"></btn>
+    <view :style="{padding: 8, alignItems: 'center', width: '100%'}">
+      <btn btn-text="Discard" :on-btn-press="discardPin"></btn>
     </view>
-    <view :style="{flex: 1, padding: 8, alignItems: 'center', width: '100%'}">
-      <btn class="button" btn-text="Save" :on-btn-press="savePin"></btn>
+    <view :style="{padding: 8, alignItems: 'center', width: '100%'}">
+      <btn btn-text="Save" :on-btn-press="savePin"></btn>
     </view>
 
-    <view :style="{height: '10%'}"></view>
   </view>
 </template>
 
@@ -158,7 +157,4 @@ export default {
 </script>
 
 <style>
-.button {
-  margin: 8;
-}
 </style>
