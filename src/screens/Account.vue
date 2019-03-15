@@ -10,9 +10,9 @@
 
 <script>
 import api from '../api'
-import store from '../store'
-import NavigationBar from '../components/NavigationBar'
 import btn from '../components/Button'
+import NavigationBar from '../components/NavigationBar'
+import store from '../store'
 
 export default {
   props: {
@@ -34,13 +34,17 @@ export default {
     btn
   },
 
-  created: function () {
+  created () {
     this.getUserData()
+  },
+
+  computed: {
+    userResource: () => store.state.userResource
   },
 
   methods: {
     getUserData () {
-      api.get(store.state.userResource)
+      api.get(this.userResource)
         .then((resp) => {
           var vm = this
           vm.userId = resp.data.data.id

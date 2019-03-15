@@ -5,7 +5,7 @@
     <scroll-view :style="{width: '100%', margin: 16}">
       <view class="row" v-for="(pin, index) in pins" :key="index">
         <text class="row-elem">
-          {{ pin.name }} [{{ distanceFromCurrentLocation(pin) }} mi.]
+          {{ pin.name }} [{{ pin.distance }} mi.]
         </text>
         <touchable-opacity
           class="row-elem"
@@ -21,14 +21,15 @@
 </template>
 
 <script>
-import api from '../api'
-import { formatErrorMsg } from '../api/utils'
-import store from '../store'
-import NavigationBar from '../components/NavigationBar'
-import btn from '../components/Button'
-import { Place } from '../location'
-
 import icon from 'react-native-vector-icons/FontAwesome'
+
+import api from '../api'
+import btn from '../components/Button'
+import NavigationBar from '../components/NavigationBar'
+import store from '../store'
+
+import { formatErrorMsg } from '../api/utils'
+import { Place } from '../location'
 
 export default {
   props: {
@@ -40,12 +41,7 @@ export default {
   data () {
     return {
       binName: '',
-      pins: [],
-      currentBinRoute:
-        store.state.userResource +
-        '/bins/' +
-        store.state.currentBin,
-      currentLocation: store.state.currentLocation
+      pins: []
     }
   },
 
@@ -58,6 +54,17 @@ export default {
   created () {
     this.getBin()
     this.getPins()
+  },
+
+  computed: {
+    currentBinRoute: () => {
+      return [
+        store.state.userResource,
+        'bins',
+        store.state.currentBin
+      ].join('/')
+    },
+    currentLocation: () => store.state.currentLocation
   },
 
   methods: {
@@ -74,8 +81,13 @@ export default {
       const pinsRoute = this.currentBinRoute + '/pins'
       api.get(pinsRoute)
         .then((resp) => {
-          var vm = this
-          vm.pins = resp.data.data
+          let vm = this
+          let pins = resp.data.data
+          pins.forEach((pin) => {
+            pin.distance = this.distanceFromCurrentLocation(pin)
+          })
+          pins.sort((a, b) => a.distance - b.distance)
+          this.pins = pins
         })
     },
 
