@@ -8,6 +8,9 @@
     <view :style="{padding: 8, alignItems: 'center', width: '100%'}">
       <btn btn-text="My Pins" :on-btn-press="goToPins"></btn>
     </view>
+    <view :style="{padding: 32}">
+      <text>Version: {{ version }}</text>
+    </view>
   </view>
 </template>
 
@@ -17,6 +20,8 @@ import btn from '../components/Button'
 import logo from '../../assets/pinbin-logo-256.png'
 import NavigationBar from '../components/NavigationBar'
 import store from '../store'
+
+import * as data from '../../app.json'
 
 import { Place, updateLocation } from '../location'
 
@@ -29,7 +34,8 @@ export default {
 
   data () {
     return {
-      logo
+      logo,
+      version: data['expo']['version']
     }
   },
 
