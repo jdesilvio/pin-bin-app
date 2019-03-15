@@ -17,8 +17,8 @@ const store = new Vuex.Store({
     setUserResource (state, userResource) {
       state.userResource = userResource
     },
-    setCurrentLocation (state, location) {
-      state.currentLocation = location
+    setCurrentLocation (state, currentLocation) {
+      state.currentLocation = currentLocation
     },
     setDefaultBin (state, defaultBin) {
       state.defaultBin = defaultBin
