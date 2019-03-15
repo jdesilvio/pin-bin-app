@@ -14,11 +14,11 @@
 <script>
 import api from '../api'
 import btn from '../components/Button'
+import logo from '../../assets/pinbin-logo-256.png'
 import NavigationBar from '../components/NavigationBar'
 import store from '../store'
-import { Place, updateLocation } from '../location'
 
-import logo from '../../assets/pinbin-logo-256.png'
+import { Place, updateLocation } from '../location'
 
 export default {
   props: {
@@ -34,12 +34,16 @@ export default {
   },
 
   created () {
-    api.get(store.state.userResource + '/bins')
+    api.get(this.userResource + '/bins')
       .then(response => {
         let defaultBin = response.data.data[0].id
         store.commit('setDefaultBin', defaultBin)
       })
     updateLocation()
+  },
+
+  computed: {
+    userResource: () => store.state.userResource
   },
 
   components: {

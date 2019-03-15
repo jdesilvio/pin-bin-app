@@ -23,9 +23,9 @@
 
 <script>
 import api from '../api'
-import store from '../store'
-import NavigationBar from '../components/NavigationBar.vue'
 import btn from '../components/Button'
+import NavigationBar from '../components/NavigationBar.vue'
+import store from '../store'
 
 export default {
   props: {
@@ -36,9 +36,7 @@ export default {
 
   data () {
     return {
-      bins: [],
-      // TODO: do this more consistently throughout
-      resource: store.state.userResource + '/bins'
+      bins: []
     }
   },
 
@@ -47,8 +45,12 @@ export default {
     btn
   },
 
-  created: function () {
+  created () {
     this.getUserBins()
+  },
+
+  computed: {
+    resource: () => store.state.userResource + '/bins'
   },
 
   methods: {

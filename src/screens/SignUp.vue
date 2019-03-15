@@ -33,9 +33,10 @@
 
 <script>
 import api from '../api'
-import { formatErrorMsg } from '../api/utils'
 import btn from '../components/Button'
-import logo from '../../assets/pinbin-logo-128.png';
+import logo from '../../assets/pinbin-logo-128.png'
+
+import { formatErrorMsg } from '../api/utils'
 
 export default {
   props: {

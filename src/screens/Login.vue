@@ -34,10 +34,11 @@
 
 <script>
 import api from '../api'
-import { getJWT, getResource, formatErrorMsg } from '../api/utils'
-import store from '../store'
 import btn from '../components/Button'
 import logo from '../../assets/pinbin-logo-128.png';
+import store from '../store'
+
+import { getJWT, getResource, formatErrorMsg } from '../api/utils'
 
 export default {
   props: {
@@ -61,6 +62,11 @@ export default {
 
   created () {
     console.log(this.navigation)
+  },
+
+  computed: {
+    jwt: () => store.state.jwt,
+    userResource: () => store.state.userResource
   },
 
   methods: {
@@ -97,7 +103,7 @@ export default {
             store.commit('setJWT', getJWT(response))
             store.commit('setUserResource', getResource(response))
 
-            if (store.state.jwt && store.state.userResource) {
+            if (this.jwt && this.userResource) {
               this.navigation.navigate('Home')
             } else {
               const errorMsg = JSON.stringify(response.data)

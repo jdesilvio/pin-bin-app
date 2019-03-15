@@ -28,9 +28,11 @@ import NavigationBar from '../components/NavigationBar'
 import PinCard from '../components/PinCard'
 import Queue from '../structures/queue'
 import store from '../store'
+
 import { updateLocation, getLocationAsync } from '../location'
 
 const batchSize = 10
+
 var queue = new Queue()
 
 export default {
@@ -63,9 +65,15 @@ export default {
     await this.loadFromQueue()
   },
 
+  computed: {
+    currentLocation: () => store.state.currentLocation,
+    defaultBin: () => store.state.defaultBin,
+    userResource: () => store.state.userResouce
+  },
+
   methods: {
     async getNearby () {
-      const currentLocation = store.state.currentLocation
+      const currentLocation = this.currentLocation
 
       params = {
         latitude: currentLocation.latitude,
@@ -116,9 +124,9 @@ export default {
       this.loadFromQueue()
 
       endpoint = [
-        store.state.userResource,
+        this.userResource,
         'bins',
-        store.state.defaultBin,
+        this.defaultBin,
         'pins'
       ].join('/')
 
