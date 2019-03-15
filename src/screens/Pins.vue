@@ -24,6 +24,7 @@
 <script>
 import api from '../api'
 import btn from '../components/Button'
+import cache from '../store/cache'
 import NavigationBar from '../components/NavigationBar'
 import PinCard from '../components/PinCard'
 import Queue from '../structures/queue'
@@ -73,20 +74,11 @@ export default {
 
   methods: {
     async getNearby () {
-      const currentLocation = this.currentLocation
-
-      params = {
-        latitude: currentLocation.latitude,
-        longitude: currentLocation.longitude
-      }
-
-      await api.get('yelp', params).then(response => {
-        data = response.data.data.yelp
-        data = JSON.parse(data)
-        businesses = data.businesses
-        batch = businesses.slice(0, batchSize)
-        batch.forEach(x => this.queue.enqueue(x))
-      })
+      var batch = await cache.cache.dispatch('FETCH_YELP')
+      batch.forEach(x => this.queue.enqueue(x))
+      console.log('***', await cache.cache.has('FETCH_YELP'))
+      await cache.cache.clear()
+      console.log('***', await cache.cache.has('FETCH_YELP'))
     },
 
     loadFromQueue () {
