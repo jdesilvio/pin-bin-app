@@ -4,7 +4,7 @@
     "name": "Pin Bin",
     "slug": "pin-bin",
     "icon": "./assets/pinbin-icon-1024.png",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "description": "Pin Bin is an app for saving places of interest",
     "ios": {
       "bundleIdentifier": "com.jdesilvio.PinBin"
